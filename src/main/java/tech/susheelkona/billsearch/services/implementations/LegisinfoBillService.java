@@ -19,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
+import tech.susheelkona.billsearch.services.cache.CachedEntity;
 
 /**
  * @author Susheel Kona
@@ -105,7 +106,7 @@ public class LegisinfoBillService extends XmlHttpService implements BillService 
     }
 
     @Override
-    public List<Bill> getAll() throws Exception {
-        return Cache.getBills().getData();
+    public CachedEntity<Bill> getAll() throws Exception {
+        return Cache.getBills();
     }
 }

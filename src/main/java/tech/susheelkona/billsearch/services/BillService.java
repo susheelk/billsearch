@@ -1,6 +1,7 @@
 package tech.susheelkona.billsearch.services;
 
 import tech.susheelkona.billsearch.model.legislation.Bill;
+import tech.susheelkona.billsearch.services.cache.CachedEntity;
 
 import java.util.List;
 
@@ -9,5 +10,5 @@ import java.util.List;
  */
 public interface BillService {
     public void update() throws Exception;
-    public List<Bill> getAll() throws Exception;
+    public CachedEntity<Bill> getAll() throws Exception;
 }
