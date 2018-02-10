@@ -1,8 +1,8 @@
 package tech.susheelkona.billsearch.services.implementations;
 
-import model.Person;
-import model.legislation.Bill;
-import model.legislation.Publication;
+import tech.susheelkona.billsearch.model.Person;
+import tech.susheelkona.billsearch.model.legislation.Bill;
+import tech.susheelkona.billsearch.model.legislation.Publication;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -19,7 +19,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Susheel Kona

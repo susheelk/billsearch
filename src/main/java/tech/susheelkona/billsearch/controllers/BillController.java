@@ -2,7 +2,7 @@ package tech.susheelkona.billsearch.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.legislation.Bill;
+import tech.susheelkona.billsearch.model.legislation.Bill;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +38,8 @@ public class BillController {
             Bill bill = billService.getAll().get(0);
 //            throw new Exception("test");
             return ResponseEntity.ok(bill);
+        } catch (NullPointerException e) {
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<Error>(new Error(e.getMessage()), HttpStatus.BAD_REQUEST);

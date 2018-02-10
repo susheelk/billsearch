@@ -1,4 +1,4 @@
-package model.legislation;
+package tech.susheelkona.billsearch.model.legislation;
 
 /**
  * @author Susheel Kona

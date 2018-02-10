@@ -1,6 +1,6 @@
 package tech.susheelkona.billsearch.services;
 
-import model.legislation.Bill;
+import tech.susheelkona.billsearch.model.legislation.Bill;
 
 import java.util.List;
 

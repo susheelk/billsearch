@@ -1,8 +1,7 @@
 package tech.susheelkona.billsearch.services.cache;
 
-import model.legislation.Bill;
+import tech.susheelkona.billsearch.model.legislation.Bill;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

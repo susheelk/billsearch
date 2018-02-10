@@ -1,9 +1,9 @@
-package model.legislation;
+package tech.susheelkona.billsearch.model.legislation;
 
 
 
 
-import model.Person;
+import tech.susheelkona.billsearch.model.Person;
 
 import java.util.Date;
 import java.util.List;

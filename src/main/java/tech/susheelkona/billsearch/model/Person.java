@@ -1,4 +1,4 @@
-package model;
+package tech.susheelkona.billsearch.model;
 
 /**
  * @author Susheel
