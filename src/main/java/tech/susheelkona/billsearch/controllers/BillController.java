@@ -2,7 +2,6 @@ package tech.susheelkona.billsearch.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.xml.internal.ws.api.pipe.ContentType;
 import org.springframework.http.MediaType;
 import tech.susheelkona.billsearch.controllers.utils.PaginatedResponse;
 import tech.susheelkona.billsearch.model.legislation.Bill;
