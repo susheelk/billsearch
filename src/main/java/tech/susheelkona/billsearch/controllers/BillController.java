@@ -15,6 +15,7 @@ import tech.susheelkona.billsearch.services.cache.CachedEntity;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -36,7 +37,8 @@ public class BillController {
     private ResponseEntity<?> getAll(
             HttpServletRequest request,
             @RequestParam(value = "page", defaultValue = "1", required = false) int page,
-            @RequestParam(value = "size", defaultValue = "25", required = false) int size
+            @RequestParam(value = "size", defaultValue = "25", required = false) int size,
+            @RequestParam(value = "includes[]", defaultValue = "number,title,session,dateIntroduced") String[] include
     ) throws JsonProcessingException {
         try {
 //            String ending = request.getRequestURI().substring();
