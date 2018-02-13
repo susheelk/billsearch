@@ -38,7 +38,7 @@ public class BillController {
             @RequestParam(value = "size", defaultValue = "25", required = false) int size
     ) throws JsonProcessingException {
         try {
-            String ending = request.getRequestURI().substring();
+//            String ending = request.getRequestURI().substring();
             return new ResponseEntity<PaginatedResponse<Bill>>(billService.getAll().getPaginatedRespone(size, page), HttpStatus.ACCEPTED);
         } catch (Exception e) {
             e.printStackTrace();
