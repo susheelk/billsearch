@@ -13,6 +13,10 @@ import tech.susheelkona.billsearch.services.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import tech.susheelkona.billsearch.services.cache.CachedEntity;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,18 +25,20 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin
+@RequestMapping("/bills")
 public class BillController {
 
     @Autowired
     BillService billService;
 
-    @GetMapping(value = "/bills", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<?> getAll(
+            HttpServletRequest request,
             @RequestParam(value = "page", defaultValue = "1", required = false) int page,
             @RequestParam(value = "size", defaultValue = "25", required = false) int size
     ) throws JsonProcessingException {
-
         try {
+            String ending = request.getRequestURI().substring();
             return new ResponseEntity<PaginatedResponse<Bill>>(billService.getAll().getPaginatedRespone(size, page), HttpStatus.ACCEPTED);
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,7 +46,7 @@ public class BillController {
         }
     }
 
-    @RequestMapping(value = "/bills/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<?> getOne(@PathVariable String id) throws JsonProcessingException {
         try {
             Bill bill = billService.getAll().getData().get(0);
@@ -53,7 +59,7 @@ public class BillController {
         }
     }
 
-    @GetMapping("/bills/update")
+    @GetMapping("/update")
     private void update(){
         try {
             billService.update();
@@ -62,6 +68,9 @@ public class BillController {
         }
     }
 
+    private static void getUrlWithoutAddress(String url) throws URISyntaxException {
+        URI uri = new URI(url);
+    }
 
 
 }

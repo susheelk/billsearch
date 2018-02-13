@@ -30,7 +30,7 @@ public class LegisinfoBillService extends XmlHttpService implements BillService 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public void update() throws Exception {
-        log.info("STARTING UPDATE OF BILLS");
+        log.info("Downloading Bills...");
         long timeStart = System.currentTimeMillis();
         List<Bill> list = new ArrayList<>();
 //        String url = URLEncoder.encode(address, "UTF-8");
