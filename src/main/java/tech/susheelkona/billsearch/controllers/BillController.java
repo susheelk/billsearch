@@ -19,6 +19,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Susheel Kona
@@ -47,11 +48,15 @@ public class BillController {
     }
 
     @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    private ResponseEntity<?> getOne(@PathVariable String id) throws JsonProcessingException {
+    private ResponseEntity<?> getOne(@PathVariable int id) throws JsonProcessingException {
+        Error error;
         try {
-            Bill bill = billService.getAll().getData().get(0);
+            Bill bill = billService.getAll().getData().stream().filter(bill1 -> bill1.getId()==id).collect(Collectors.toList()).get(0);
             return ResponseEntity.ok(bill);
-        } catch (NullPointerException e) {
+        } catch (IndexOutOfBoundsException e) {
+            return new ResponseEntity<>(new Error("Not found!"), HttpStatus.NOT_FOUND);
+        }
+        catch (NullPointerException e) {
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,6 +64,9 @@ public class BillController {
         }
     }
 
+    /** For debug purposes
+     *
+     */
     @GetMapping("/update")
     private void update(){
         try {

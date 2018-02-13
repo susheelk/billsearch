@@ -8,8 +8,6 @@ import java.util.List;
  */
 public class PaginatedResponse<T> {
     private Date lastUpdated;
-    private Date nextUpdate;
-    private boolean currentlyUpdating;
     private String nextPage;
     private String previousPage;
     private List<T> data;
@@ -30,21 +28,6 @@ public class PaginatedResponse<T> {
         this.lastUpdated = lastUpdated;
     }
 
-    public Date getNextUpdate() {
-        return nextUpdate;
-    }
-
-    public void setNextUpdate(Date nextUpdate) {
-        this.nextUpdate = nextUpdate;
-    }
-
-    public boolean isCurrentlyUpdating() {
-        return currentlyUpdating;
-    }
-
-    public void setCurrentlyUpdating(boolean currentlyUpdating) {
-        this.currentlyUpdating = currentlyUpdating;
-    }
 
     public String getNextPage() {
         return nextPage;

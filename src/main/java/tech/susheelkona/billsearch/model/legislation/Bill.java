@@ -4,6 +4,7 @@ package tech.susheelkona.billsearch.model.legislation;
 
 
 import tech.susheelkona.billsearch.model.Person;
+import tech.susheelkona.billsearch.model.Resource;
 
 import java.util.Date;
 import java.util.List;
@@ -12,8 +13,7 @@ import java.util.List;
  * @author Susheel Kona
  */
 
-public class Bill {
-    private int id; // Legisinfo unique id
+public class Bill extends Resource{
     private String session; // ie 42-1
     private String number; //ie C-2
 
@@ -30,16 +30,9 @@ public class Bill {
     private Person sponsor;
 
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getSession() {
         return session;
+
     }
 
     public void setSession(String session) {

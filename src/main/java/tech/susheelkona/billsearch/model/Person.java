@@ -4,13 +4,11 @@ package tech.susheelkona.billsearch.model;
  * @author Susheel
  */
 
-public class Person {
-    private int id;
+public class Person extends Resource{
     private String firstName;
     private String lastName;
 
-    public Person(int id, String firstName, String lastName) {
-        this.id = id;
+    public Person(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -38,11 +36,4 @@ public class Person {
         return firstName + " " + lastName;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 }

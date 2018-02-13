@@ -92,6 +92,7 @@ public class LegisinfoBillService extends XmlHttpService implements BillService 
                     // TODO: add Publication files
 //                    System.out.println(title);
                 }
+                bill.setResourceUri("/bills/"+bill.getId());
                 list.add(bill);
             }
         }
