@@ -36,7 +36,7 @@ class MultiThreadUpdater implements Runnable {
         try {
             log.info("Update thread started");
 
-            thread.sleep(7000);
+//            thread.sleep(7000);
             billService.update();
         } catch (Exception e) {
             e.printStackTrace();

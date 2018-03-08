@@ -63,6 +63,11 @@ public class LegisinfoBillService extends XmlHttpService implements BillService 
                         eSession.getAttribute("sessionNumber");
                 bill.setSession(session);
 
+                Element eNumber = (Element) element.getElementsByTagName("BillNumber").item(0);
+                String number = eNumber.getAttribute("prefix")+"-"+
+                        eNumber.getAttribute("number");
+                bill.setNumber(number);
+
                 Element eTitles = (Element) element.getElementsByTagName("BillTitle").item(0);
                 Element enTitle = (Element) eTitles.getElementsByTagName("Title").item(0);
                 bill.setTitle(enTitle.getTextContent());
@@ -70,6 +75,10 @@ public class LegisinfoBillService extends XmlHttpService implements BillService 
                 Element esTitles = (Element) element.getElementsByTagName("ShortTitle").item(0);
                 Element ensTitle = (Element) esTitles.getElementsByTagName("Title").item(0);
                 bill.setShortTitle(ensTitle.getTextContent());
+
+                Element eType = (Element)((Element) element.getElementsByTagName("BillType").item(0))
+                        .getElementsByTagName("Title").item(0);
+                bill.setBillType(eType.getTextContent());
 
                 Person sponsor = new Person();
                 Element eSponsor = (Element) element.getElementsByTagName("SponsorAffiliation").item(0);
