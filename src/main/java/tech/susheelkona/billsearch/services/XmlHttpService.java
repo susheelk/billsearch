@@ -44,8 +44,14 @@ public abstract class XmlHttpService {
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-//        Document document = builder.parse(new URL(url).openStream());
-        Document document = builder.parse(new File("download.xml"));
+        Document document;
+
+        if(System.getenv("DEPLOYED") == "True"){
+            document = builder.parse(new URL(url).openStream());
+        } else {
+            document = builder.parse(new File("download.xml"));
+        }
+
         document.getDocumentElement().normalize();
 //        System.out.println(document.getDocumentElement().getNodeName());
         return document;
