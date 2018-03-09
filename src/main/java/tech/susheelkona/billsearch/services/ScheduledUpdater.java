@@ -34,6 +34,8 @@ class MultiThreadUpdater implements Runnable {
     @Override
     public void run() {
         try {
+            log.info("DEPLOYED: "+System.getenv("DEPLOYED"));
+
             log.info("Update thread started");
 
             if (System.getenv("DEPLOYED") == "True") {
