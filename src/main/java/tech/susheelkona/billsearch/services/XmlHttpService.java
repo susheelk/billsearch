@@ -46,7 +46,14 @@ public abstract class XmlHttpService {
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document document;
 
-        if(System.getenv("DEPLOYED").matches( "True")){
+        boolean deployed;
+        try {
+            deployed = System.getenv("DEPLOYED").matches("Y");
+        } catch (Exception e) {
+            deployed = false;
+        }
+
+        if(deployed){
             document = builder.parse(new URL(url).openStream());
         } else {
             document = builder.parse(new File("download.xml"));
