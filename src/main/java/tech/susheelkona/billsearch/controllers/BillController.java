@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;
 import tech.susheelkona.billsearch.controllers.utils.PaginatedResponse;
+import tech.susheelkona.billsearch.controllers.utils.PropertyIncluder;
 import tech.susheelkona.billsearch.model.legislation.Bill;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,12 +38,15 @@ public class BillController {
     private ResponseEntity<?> getAll(
             HttpServletRequest request,
             @RequestParam(value = "page", defaultValue = "1", required = false) int page,
-            @RequestParam(value = "size", defaultValue = "25", required = false) int size,
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size,
             @RequestParam(value = "includes[]", defaultValue = "number,title,session,dateIntroduced") String[] include
     ) throws JsonProcessingException {
         try {
 //            String ending = request.getRequestURI().substring();
-            return new ResponseEntity<PaginatedResponse<Bill>>(billService.getAll().getPaginatedRespone(size, page), HttpStatus.ACCEPTED);
+            PaginatedResponse<Bill> paginatedRespone = billService.getAll().getPaginatedRespone(size, page);
+            PropertyIncluder includerFilter = new PropertyIncluder(include, paginatedRespone);
+
+            return new ResponseEntity<String>(includerFilter.serialize(), HttpStatus.ACCEPTED);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(new Error(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
