@@ -4,14 +4,16 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.PropertyFilter;
 import com.fasterxml.jackson.databind.ser.PropertyWriter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import tech.susheelkona.billsearch.model.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,16 +23,21 @@ import java.util.List;
  */
 public class PropertyIncluder {
 
-    private static final List<String> alwaysInclude = new ArrayList<String>(Arrays.asList("id"));
+    private static final List<String> alwaysInclude = new ArrayList<String>(Arrays.asList("id, url"));
 
     private List<String> includedProperties;
     private PaginatedResponse resource;
-    private ObjectMapper mapper;
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private MappingJackson2HttpMessageConverter springMvcJacksonConverter;
 
     public PropertyIncluder(String[] includedProperties, PaginatedResponse resource) {
         this.includedProperties = Arrays.asList(includedProperties);
         this.resource = resource;
-        mapper = new ObjectMapper();
+        objectMapper = new ObjectMapper();
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        objectMapper.setDateFormat(format);
     }
 
     public List<String> getIncludedProperties() {
@@ -55,7 +62,7 @@ public class PropertyIncluder {
                         writer.serializeAsField(pojo, jgen, provider);
                         return;
                     }
-                } else if (!jgen.canOmitFields()) { // since 2.3
+                } else if (!jgen.canOmitFields()) {
                     writer.serializeAsOmittedField(pojo, jgen, provider);
                 }
             }
@@ -63,7 +70,7 @@ public class PropertyIncluder {
         };
 
         FilterProvider filters = new SimpleFilterProvider().addFilter("includer", propertyFilter);
-        return mapper.writer(filters).writeValueAsString(resource);
+        return objectMapper.writer(filters).writeValueAsString(resource);
     }
 
     public void setResource(PaginatedResponse resource) {
