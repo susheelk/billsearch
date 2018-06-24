@@ -39,7 +39,7 @@ public class BillController {
             HttpServletRequest request,
             @RequestParam(value = "page", defaultValue = "1", required = false) int page,
             @RequestParam(value = "size", defaultValue = "10", required = false) int size,
-            @RequestParam(value = "includes[]", defaultValue = "number,title,session,dateIntroduced") String[] include
+            @RequestParam(value = "includes", defaultValue = "number,title,session,dateIntroduced", required = false) String[] include
     ) throws JsonProcessingException {
         try {
 //            String ending = request.getRequestURI().substring();

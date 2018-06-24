@@ -3,6 +3,7 @@ package tech.susheelkona.billsearch.model.legislation;
 
 
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import tech.susheelkona.billsearch.model.Person;
 import tech.susheelkona.billsearch.model.Resource;
 
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * @author Susheel Kona
  */
-
+@JsonFilter("includer")
 public class Bill extends Resource{
     private String session; // ie 42-1
     private String number; //ie C-2
