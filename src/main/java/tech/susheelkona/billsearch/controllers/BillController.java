@@ -2,6 +2,9 @@ package tech.susheelkona.billsearch.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.springframework.http.MediaType;
 import tech.susheelkona.billsearch.controllers.utils.PaginatedResponse;
 import tech.susheelkona.billsearch.controllers.utils.PropertyIncluder;
@@ -20,6 +23,7 @@ import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,12 +38,14 @@ public class BillController {
     @Autowired
     BillService billService;
 
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<?> getAll(
             HttpServletRequest request,
             @RequestParam(value = "page", defaultValue = "1", required = false) int page,
             @RequestParam(value = "size", defaultValue = "10", required = false) int size,
-            @RequestParam(value = "include", defaultValue = "number,title,session,dateIntroduced", required = false) String[] include
+            @RequestParam(value = "include", defaultValue = "number,title,session,dateIntroduced,law,url", required = false) String[] include
     ) throws JsonProcessingException {
         try {
 //            String ending = request.getRequestURI().substring();
@@ -55,10 +61,11 @@ public class BillController {
 
     @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<?> getOne(@PathVariable int id) throws JsonProcessingException {
+        FilterProvider filters = new SimpleFilterProvider().addFilter("includer", SimpleBeanPropertyFilter.serializeAllExcept(Collections.emptySet()));
         Error error;
         try {
             Bill bill = billService.getAll().getData().stream().filter(bill1 -> bill1.getId()==id).collect(Collectors.toList()).get(0);
-            return ResponseEntity.ok(bill);
+            return ResponseEntity.ok(objectMapper.writer(filters).writeValueAsString(bill));
         } catch (IndexOutOfBoundsException e) {
             return new ResponseEntity<>(new Error("Not found!"), HttpStatus.NOT_FOUND);
         }

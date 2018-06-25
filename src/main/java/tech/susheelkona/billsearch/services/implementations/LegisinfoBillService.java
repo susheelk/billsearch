@@ -127,6 +127,19 @@ public class LegisinfoBillService extends XmlHttpService implements BillService 
                     Element eEventStatus = (Element)(eEvent.getElementsByTagName("Status").item(0));
                     Element eEventTitle = (Element) (eEventStatus.getElementsByTagName("Title").item(0));
                     event.setStatus(eEventTitle.getTextContent());
+
+                    if(event.getStatus().matches("Royal Assent")) {
+                        bill.setLaw(true);
+                    }
+
+                    // Chamber
+                    String sChamber = eEvent.getAttribute("chamber");
+                    event.setChamber(sChamber.matches("HOC") ? "House of Commons" : "Senate");
+
+                    // Event date
+                    String sDate = eEvent.getAttribute("date").substring(0, 10);
+                    event.setDate(dateFormat.parse(sDate));
+
                     allEventsList.add(event);
                 }
                 bill.setEvents(allEventsList);
@@ -137,9 +150,9 @@ public class LegisinfoBillService extends XmlHttpService implements BillService 
         }
 
         System.out.println("Parse Time: "+(System.currentTimeMillis()-timeStart));
-        Collections.reverse(list);
+//        Collections.reverse(list);
         timeStart = System.currentTimeMillis();
-        System.out.println("Reverse Time: "+(System.currentTimeMillis()-timeStart));
+//        System.out.println("Reverse Time: "+(System.currentTimeMillis()-timeStart));
 
         Cache.updateBills(list);
         log.info("BILL UPDATE SUCCESS");

@@ -30,6 +30,8 @@ public class Bill extends Resource{
     private List<Publication> publications;
     private Person sponsor;
 
+    private boolean law;
+
 
     public String getSession() {
         return session;
@@ -118,5 +120,13 @@ public class Bill extends Resource{
 
     public void setSponsor(Person sponsor) {
         this.sponsor = sponsor;
+    }
+
+    public boolean isLaw() {
+        return law;
+    }
+
+    public void setLaw(boolean law) {
+        this.law = law;
     }
 }

@@ -46,4 +46,12 @@ public class Event {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    public String getChamber() {
+        return chamber;
+    }
+
+    public void setChamber(String chamber) {
+        this.chamber = chamber;
+    }
 }
