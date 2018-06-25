@@ -38,7 +38,10 @@ public class BillController {
     @Autowired
     BillService billService;
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+//    private static final ObjectMapper objectMapper = new ObjectMapper(){{}};
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<?> getAll(

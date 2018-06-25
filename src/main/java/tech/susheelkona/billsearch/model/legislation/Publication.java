@@ -15,6 +15,10 @@ public class Publication {
         this.url = url;
     }
 
+    public Publication(){
+
+    }
+
     public String getTitle() {
         return title;
     }

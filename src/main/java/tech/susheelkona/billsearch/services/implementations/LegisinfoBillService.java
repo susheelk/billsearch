@@ -13,6 +13,7 @@ import tech.susheelkona.billsearch.services.BillService;
 import tech.susheelkona.billsearch.services.cache.Cache;
 import tech.susheelkona.billsearch.services.XmlHttpService;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -99,18 +100,31 @@ public class LegisinfoBillService extends XmlHttpService implements BillService 
                 bill.setSponsor(sponsor);
 
                 // Publications
-                List<Publication> publications = new LinkedList<>();
+                List<Publication> publications = new ArrayList<>();
                 Element ePubs = (Element) element.getElementsByTagName("Publications").item(0);
                 NodeList nPubsList = ePubs.getElementsByTagName("Publication");
                 for (int x = 0; x < nPubsList.getLength(); x++) {
                     Node nPub = nPubsList.item(x);
                     Element ePub = (Element) nPub;
-//                    int id = Integer.parseInt(ePub.getAttribute("id "));
+
+                    Publication publication = new Publication();
+                    int id = Integer.parseInt(ePub.getAttribute("id"));
+                    publication.setId(id);
+
                     Element eTitle = (Element) ePub.getElementsByTagName("Title").item(0);
                     String title = eTitle.getTextContent();
-                    // TODO: add Publication files
-//                    System.out.println(title);
+                    publication.setTitle(title);
+
+                    // Publication urls
+                    Element ePubFile = (Element) ePub.getElementsByTagName("PublicationFile").item(0);
+                    String path = ePubFile.getAttribute("relativePath");
+                    path = path.substring(2, path.length());
+                    path = "http://www."+path;
+                    publication.setUrl(path);
+
+                    publications.add(publication);
                 }
+                bill.setPublications(publications);
 
                 // Events
                 Element eEvents = (Element) element.getElementsByTagName("Events").item(0);
@@ -121,28 +135,17 @@ public class LegisinfoBillService extends XmlHttpService implements BillService 
                 List<Event> allEventsList = new ArrayList<>();
                 for (int x = 0; x < nEventsList.getLength(); x++) {
                     Element eEvent = (Element) nEventsList.item(x);
-                    Event event = new Event();
-                    event.setId(Integer.parseInt(eEvent.getAttribute("id")));
-
-                    Element eEventStatus = (Element)(eEvent.getElementsByTagName("Status").item(0));
-                    Element eEventTitle = (Element) (eEventStatus.getElementsByTagName("Title").item(0));
-                    event.setStatus(eEventTitle.getTextContent());
-
-                    if(event.getStatus().matches("Royal Assent")) {
-                        bill.setLaw(true);
-                    }
-
-                    // Chamber
-                    String sChamber = eEvent.getAttribute("chamber");
-                    event.setChamber(sChamber.matches("HOC") ? "House of Commons" : "Senate");
-
-                    // Event date
-                    String sDate = eEvent.getAttribute("date").substring(0, 10);
-                    event.setDate(dateFormat.parse(sDate));
-
-                    allEventsList.add(event);
+                    allEventsList.add(extractEvent(eEvent));
                 }
                 bill.setEvents(allEventsList);
+
+                // Latest Event
+                Element eLatestEvent = (Element) eEvents.getElementsByTagName("LastMajorStageEvent").item(0);
+                Element eEventN = (Element) eLatestEvent.getElementsByTagName("Event").item(0);
+                bill.setLastMajorEvent(extractEvent(eEventN));
+                if(bill.getLastMajorEvent().getStatus().matches("Royal Assent")) {
+                    bill.setLaw(true);
+                }
 
                 bill.setResourceUri("/bills/"+bill.getId());
                 list.add(bill);
@@ -156,6 +159,29 @@ public class LegisinfoBillService extends XmlHttpService implements BillService 
 
         Cache.updateBills(list);
         log.info("BILL UPDATE SUCCESS");
+    }
+
+    private Event extractEvent(Element eEvent) throws ParseException {
+        Event event = new Event();
+        event.setId(Integer.parseInt(eEvent.getAttribute("id")));
+
+        Element eEventStatus = (Element)(eEvent.getElementsByTagName("Status").item(0));
+        Element eEventTitle = (Element) (eEventStatus.getElementsByTagName("Title").item(0));
+        event.setStatus(eEventTitle.getTextContent());
+
+//        if(event.getStatus().matches("Royal Assent")) {
+//            bill.setLaw(true);
+//        }
+
+        // Chamber
+        String sChamber = eEvent.getAttribute("chamber");
+        event.setChamber(sChamber.matches("HOC") ? "House of Commons" : "Senate");
+
+        // Event date
+        String sDate = eEvent.getAttribute("date").substring(0, 10);
+        event.setDate(dateFormat.parse(sDate));
+
+        return event;
     }
 
     @Override

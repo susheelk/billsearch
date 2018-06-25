@@ -1,6 +1,7 @@
 package tech.susheelkona.billsearch;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.corba.se.spi.ior.ObjectKey;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -26,6 +27,14 @@ public class BillsearchApplication {
     @Bean
     public BillService billService(){
 	    return new LegisinfoBillService();
+    }
+
+    @Bean
+    public ObjectMapper mapper() {
+	    return new ObjectMapper(){{
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            setDateFormat(format);
+        }};
     }
 
 
