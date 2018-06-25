@@ -10,11 +10,17 @@ public class Event {
     private String status;
     private int id;
     private Date date;
+    private String chamber;
 
-    public Event(String status, int id, Date date) {
+    public Event(String status, int id, Date date, String chamber) {
         this.status = status;
         this.id = id;
         this.date = date;
+        this.chamber = chamber;
+    }
+
+    public Event(){
+
     }
 
     public String getStatus() {
