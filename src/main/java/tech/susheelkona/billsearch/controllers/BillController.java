@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.springframework.http.MediaType;
 import tech.susheelkona.billsearch.controllers.utils.PaginatedResponse;
 import tech.susheelkona.billsearch.controllers.utils.PropertyIncluder;
+import tech.susheelkona.billsearch.controllers.utils.filters.BillFilter;
+import tech.susheelkona.billsearch.controllers.utils.filters.Filter;
 import tech.susheelkona.billsearch.model.legislation.Bill;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,7 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -51,9 +54,13 @@ public class BillController {
             @RequestParam(value = "include", defaultValue = "number,title,session,dateIntroduced,law,url", required = false) String[] include
     ) throws JsonProcessingException {
         try {
-//            String ending = request.getRequestURI().substring();
-            PaginatedResponse<Bill> paginatedRespone = billService.getAll().getPaginatedRespone(size, page);
-            PropertyIncluder includerFilter = new PropertyIncluder(include, paginatedRespone);
+            Filter<Bill> billFilter = new BillFilter(request);
+//            PaginatedResponse<Bill> paginatedRespone = billService.getAll().getPaginatedRespone(size, page);
+            CachedEntity<Bill> cachedData = billService.getAll();
+            
+            cachedData.filter(billFilter);
+            PropertyIncluder includerFilter = new PropertyIncluder(include, cachedData.getPaginatedRespone(size, page));
+
 
             return new ResponseEntity<String>(includerFilter.serialize(), HttpStatus.ACCEPTED);
         } catch (Exception e) {

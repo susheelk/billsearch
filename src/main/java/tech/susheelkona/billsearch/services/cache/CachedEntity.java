@@ -2,6 +2,7 @@ package tech.susheelkona.billsearch.services.cache;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import tech.susheelkona.billsearch.controllers.utils.PaginatedResponse;
+import tech.susheelkona.billsearch.controllers.utils.filters.Filter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +16,7 @@ public class CachedEntity<T>{
     private List<T> data;
     private Date lastUpdated;
 
+
     public CachedEntity() {
     }
 
@@ -26,6 +28,10 @@ public class CachedEntity<T>{
     public PaginatedResponse getPaginatedRespone(int pageSize, int pageIndex) {
         PaginatedResponse<T> response = new PaginatedResponse<>();
         int start = (pageIndex-1)*pageSize;
+
+        if(pageSize > data.size()) {
+            pageSize = data.size();
+        }
 
         response.setData(new ArrayList<T>(data.subList(start, start+pageSize)));
         response.setLastUpdated(lastUpdated);
@@ -40,6 +46,7 @@ public class CachedEntity<T>{
     }
 
     public int getTotalPages(int pageSize) {
+        System.out.println();
         return (data.size() / pageSize) + (data.size() % pageSize);
     }
 
@@ -58,4 +65,10 @@ public class CachedEntity<T>{
     public void setLastUpdated(Date lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
+
+    public void filter(Filter<T> filter) {
+        setData(filter.doFilter(getData()));
+    }
+
+
 }

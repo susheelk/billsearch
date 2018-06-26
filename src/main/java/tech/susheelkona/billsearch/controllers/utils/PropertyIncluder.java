@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class PropertyIncluder {
 
-    private static final List<String> alwaysInclude = new ArrayList<String>(Arrays.asList("id, url"));
+    private static final List<String> alwaysInclude = new ArrayList<String>(Arrays.asList("id", "url"));
 
     private List<String> includedProperties;
     private PaginatedResponse resource;

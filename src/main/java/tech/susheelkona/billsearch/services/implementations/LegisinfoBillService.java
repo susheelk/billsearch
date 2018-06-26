@@ -186,6 +186,10 @@ public class LegisinfoBillService extends XmlHttpService implements BillService 
 
     @Override
     public CachedEntity<Bill> getAll() throws Exception {
-        return Cache.getBills();
+        CachedEntity<Bill> cache =  Cache.getBills();
+        CachedEntity<Bill> copy = new CachedEntity<>();
+        copy.setLastUpdated(cache.getLastUpdated());
+        copy.setData(new ArrayList<>(cache.getData()));
+        return copy;
     }
 }

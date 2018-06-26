@@ -24,8 +24,8 @@ public class Bill extends Resource{
 
     private Date dateIntroduced;
     private Date dateLastUpdated;
-    private List<Event> events;
     private Event lastMajorEvent; // Only includes major events, unlike the events list
+    private List<Event> events;
 
     private List<Publication> publications;
     private Person sponsor;
@@ -42,9 +42,6 @@ public class Bill extends Resource{
         this.session = session;
     }
 
-    public String getNumber() {
-        return number;
-    }
 
     public void setNumber(String number) {
         this.number = number;
@@ -56,6 +53,10 @@ public class Bill extends Resource{
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getNumber() {
+        return number;
     }
 
     public String getShortTitle() {
