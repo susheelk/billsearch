@@ -33,6 +33,10 @@ public class BillFilter extends Filter<Bill> {
                 case "law":
                     data = filterByLaw(Boolean.parseBoolean(entry.getValue()), data);
                     break;
+
+                case "sponsor_id":
+                    data = filterBySponsorId(Integer.parseInt(entry.getValue()), data);
+                    break;
             }
         }
         return data;
@@ -53,5 +57,9 @@ public class BillFilter extends Filter<Bill> {
     public List<Bill> filterByOriginChamber(String chamber, List<Bill> data) {
         return data.stream().filter(bill -> bill.getNumber().startsWith(chamber.substring(0, 1)))
                 .collect(Collectors.toList());
+    }
+
+    public List<Bill> filterBySponsorId(int id, List<Bill> data) {
+        return data.stream().filter(bill -> bill.getSponsor().getId() == id).collect(Collectors.toList());
     }
 }

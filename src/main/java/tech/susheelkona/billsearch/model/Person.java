@@ -7,6 +7,7 @@ package tech.susheelkona.billsearch.model;
 public class Person extends Resource{
     private String firstName;
     private String lastName;
+    private String title;
 
     public Person(String firstName, String lastName) {
         this.firstName = firstName;
@@ -15,6 +16,14 @@ public class Person extends Resource{
 
     // Blank Constructor
     public Person() {}
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getFirstName() {
         return firstName;

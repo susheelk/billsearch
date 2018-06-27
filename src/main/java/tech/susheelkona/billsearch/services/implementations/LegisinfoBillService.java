@@ -95,8 +95,12 @@ public class LegisinfoBillService extends XmlHttpService implements BillService 
                 Element ePerson = (Element) eSponsor.getElementsByTagName("Person").item(0);
                 Element efName = (Element) ePerson.getElementsByTagName("FirstName").item(0);
                 Element elName = (Element) ePerson.getElementsByTagName("LastName").item(0);
+                Element esTitle = (Element) eSponsor.getElementsByTagName("Title").item(0);
+                String ssTitle = esTitle.getTextContent();
                 sponsor.setFirstName(efName.getTextContent());
                 sponsor.setLastName(elName.getTextContent());
+                sponsor.setId(Integer.parseInt(ePerson.getAttribute("id")));
+                sponsor.setTitle(ssTitle.matches("Senator") ? ssTitle : "MP");
                 bill.setSponsor(sponsor);
 
                 // Publications
@@ -180,6 +184,9 @@ public class LegisinfoBillService extends XmlHttpService implements BillService 
         // Event date
         String sDate = eEvent.getAttribute("date").substring(0, 10);
         event.setDate(dateFormat.parse(sDate));
+
+        // Bill Tupe
+
 
         return event;
     }
