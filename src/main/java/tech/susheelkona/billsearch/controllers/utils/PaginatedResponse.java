@@ -1,11 +1,16 @@
 package tech.susheelkona.billsearch.controllers.utils;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import java.util.Date;
 import java.util.List;
 
 /**
  * @author Susheel Kona
  */
+@JsonPropertyOrder({"lastUpdated", "nextPage", "previousPage", "totalSize", "data"})
 public class PaginatedResponse<T> {
     private Date lastUpdated;
     private String nextPage;
@@ -43,5 +48,11 @@ public class PaginatedResponse<T> {
 
     public void setPreviousPage(String previousPage) {
         this.previousPage = previousPage;
+    }
+
+    @JsonGetter("totalSize")
+
+    public int getTotalSize() {
+        return data.size();
     }
 }

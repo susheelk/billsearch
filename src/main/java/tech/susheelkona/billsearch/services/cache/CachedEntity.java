@@ -39,15 +39,14 @@ public class CachedEntity<T>{
         if (pageIndex != 1) {
             response.setPreviousPage(pageIndex-1+"");
         }
-        if (pageIndex != getTotalPages(pageSize)) {
+        if (pageIndex != getTotalPages(pageSize) && getTotalPages(pageSize) != 0) {
             response.setNextPage(pageIndex+1+"");
         }
         return response;
     }
 
     public int getTotalPages(int pageSize) {
-        System.out.println();
-        return (data.size() / pageSize) + (data.size() % pageSize);
+        return pageSize != 0 ? (data.size() / pageSize) + (data.size() % pageSize) : 0;
     }
 
     public List<T> getData() {

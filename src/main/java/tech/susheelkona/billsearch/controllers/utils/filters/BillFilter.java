@@ -37,6 +37,9 @@ public class BillFilter extends Filter<Bill> {
                 case "sponsor_id":
                     data = filterBySponsorId(Integer.parseInt(entry.getValue()), data);
                     break;
+
+                case "sponsor_name":
+                    data = filterBySponsorName(entry.getValue(), data);
             }
         }
         return data;
@@ -61,5 +64,9 @@ public class BillFilter extends Filter<Bill> {
 
     public List<Bill> filterBySponsorId(int id, List<Bill> data) {
         return data.stream().filter(bill -> bill.getSponsor().getId() == id).collect(Collectors.toList());
+    }
+
+    public List<Bill> filterBySponsorName(String name, List<Bill> data){
+        return data.stream().filter(bill -> bill.getSponsor().getName().matches(name)).collect(Collectors.toList());
     }
 }
