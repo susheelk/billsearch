@@ -39,7 +39,7 @@ public class BillFilter extends Filter<Bill> {
                     break;
 
                 case "sponsor_name":
-                    data = filterBySponsorName(entry.getValue(), data);
+                    data = filterBySponsorName(entry.getValue().replace("_", " "), data);
             }
         }
         return data;
