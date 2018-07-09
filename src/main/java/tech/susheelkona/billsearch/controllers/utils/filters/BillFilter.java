@@ -40,6 +40,14 @@ public class BillFilter extends Filter<Bill> {
 
                 case "sponsor_name":
                     data = filterBySponsorName(entry.getValue().replace("_", " "), data);
+
+                case "bill_state":
+                    data = filterByBillState(entry.getValue().replace("_", ""), data);
+                    break;
+
+                case "new":
+                    data = filterByNew(Boolean.parseBoolean(entry.getValue()), data);
+                    break;
             }
         }
         return data;
@@ -68,5 +76,13 @@ public class BillFilter extends Filter<Bill> {
 
     public List<Bill> filterBySponsorName(String name, List<Bill> data){
         return data.stream().filter(bill -> bill.getSponsor().getName().matches(name)).collect(Collectors.toList());
+    }
+
+    public List<Bill> filterByBillState(String state, List<Bill> data) {
+        return data.stream().filter(bill -> bill.getLastMajorEvent().getStatus().matches(state)).collect(Collectors.toList());
+    }
+
+    public List<Bill> filterByNew(boolean bnew, List<Bill> data){
+        return data.stream().filter(bill -> (bill.getEvents().size() == 1) == bnew).collect(Collectors.toList());
     }
 }
