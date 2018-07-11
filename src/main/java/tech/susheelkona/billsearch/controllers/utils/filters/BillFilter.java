@@ -40,6 +40,7 @@ public class BillFilter extends Filter<Bill> {
 
                 case "sponsor_name":
                     data = filterBySponsorName(entry.getValue().replace("_", " "), data);
+                    break;
 
                 case "bill_state":
                     data = filterByBillState(entry.getValue().replace("_", ""), data);
