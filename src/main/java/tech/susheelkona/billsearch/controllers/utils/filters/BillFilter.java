@@ -3,6 +3,7 @@ package tech.susheelkona.billsearch.controllers.utils.filters;
 import tech.susheelkona.billsearch.model.legislation.Bill;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -92,6 +93,9 @@ public class BillFilter extends Filter<Bill> {
     }
 
     public List<Bill> search(String query, List<Bill> data) {
-        return data.stream().filter(bill -> bill.contains(query)).collect(Collectors.toList());
+        if (query.length() > 1) {
+            return data.stream().filter(bill -> bill.contains(query)).collect(Collectors.toList());
+        }
+        return new ArrayList<>();
     }
 }
