@@ -6,6 +6,7 @@ package tech.susheelkona.billsearch.model.legislation;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import tech.susheelkona.billsearch.model.Person;
 import tech.susheelkona.billsearch.model.Resource;
+import tech.susheelkona.billsearch.model.Searchable;
 
 import java.util.Date;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  * @author Susheel Kona
  */
 @JsonFilter("includer")
-public class Bill extends Resource{
+public class Bill extends Resource implements Searchable {
     private String session; // ie 42-1
     private String number; //ie C-2
 
@@ -129,5 +130,14 @@ public class Bill extends Resource{
 
     public void setLaw(boolean law) {
         this.law = law;
+    }
+
+    @Override
+    public boolean contains(String query) {
+        query = query.toLowerCase();
+        return (title.toLowerCase().contains(query)
+                || number.toLowerCase().contains(query)
+                || number.replace("-", "").toLowerCase().contains(query)
+                || (getId()+"").matches(query));
     }
 }

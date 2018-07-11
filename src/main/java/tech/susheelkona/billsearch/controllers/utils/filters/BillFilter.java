@@ -48,6 +48,10 @@ public class BillFilter extends Filter<Bill> {
                 case "new":
                     data = filterByNew(Boolean.parseBoolean(entry.getValue()), data);
                     break;
+
+                case "query":
+                    data = search(entry.getValue().replace("+", ""), data);
+                    break;
             }
         }
         return data;
@@ -84,5 +88,9 @@ public class BillFilter extends Filter<Bill> {
 
     public List<Bill> filterByNew(boolean bnew, List<Bill> data){
         return data.stream().filter(bill -> (bill.getEvents().size() == 1) == bnew).collect(Collectors.toList());
+    }
+
+    public List<Bill> search(String query, List<Bill> data) {
+        return data.stream().filter(bill -> bill.contains(query)).collect(Collectors.toList());
     }
 }
