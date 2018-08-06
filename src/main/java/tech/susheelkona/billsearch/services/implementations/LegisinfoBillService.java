@@ -144,9 +144,9 @@ public class LegisinfoBillService extends XmlHttpService implements BillService 
                 bill.setEvents(allEventsList);
 
                 // Latest Event
-                Element eLatestEvent = (Element) eEvents.getElementsByTagName("LastMajorStageEvent").item(0);
-                Element eEventN = (Element) eLatestEvent.getElementsByTagName("Event").item(0);
-                bill.setLastMajorEvent(extractEvent(eEventN));
+//                Element eLatestEvent = (Element) eEvents.getElementsByTagName("LastMajorStageEvent").item(0);
+//                Element eEventN = (Element) eLatestEvent.getElementsByTagName("Event").item(0);
+//                bill.setLastMajorEvent(extractEvent(eEventN));
                 if(bill.getLastMajorEvent().getStatus().matches("Royal Assent")) {
                     bill.setLaw(true);
                 }

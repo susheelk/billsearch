@@ -53,6 +53,8 @@ public abstract class XmlHttpService {
             deployed = false;
         }
 
+//        deployed=true;
+
         if(deployed){
             document = builder.parse(new URL(url).openStream());
         } else {

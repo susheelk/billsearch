@@ -101,7 +101,8 @@ public class Bill extends Resource implements Searchable {
     }
 
     public Event getLastMajorEvent() {
-        return lastMajorEvent;
+//        return lastMajorEvent;
+        return events.get(events.size()-1);
     }
 
     public void setLastMajorEvent(Event lastMajorEvent) {
