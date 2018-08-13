@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.List;
+
 
 /**
  * @author Susheel Kona
@@ -15,9 +18,13 @@ public class ScheduledUpdater {
     @Autowired
     BillService billService;
 
+    @Autowired
+    VoteService voteService;
+
     @Scheduled(fixedRate = 60000*60)
     public void updateAll() {
-        new MultiThreadUpdater(billService).start();
+        new MultiThreadUpdater(billService, voteService).start();
+//        new MultiThreadUpdater(voteService).start();
     }
 }
 
@@ -25,26 +32,28 @@ class MultiThreadUpdater implements Runnable {
 
     private final org.slf4j.Logger log = LoggerFactory.getLogger(this.getClass());
     private Thread thread;
-    BillService billService;
+    List<Updatable> updatables;
 
-    public MultiThreadUpdater(BillService billService) {
-        this.billService = billService;
+    public MultiThreadUpdater(Updatable ...updatables) {
+        this.updatables = Arrays.asList(updatables);
     }
 
     @Override
     public void run() {
-        try {
-            log.info("DEPLOYED: "+System.getenv("DEPLOYED"));
+        log.info("DEPLOYED: "+System.getenv("DEPLOYED"));
 
-            log.info("Update thread started");
+        log.info("Update thread started");
 
 //            if (System.getenv("DEPLOYED") == "True") {
 //                thread.sleep(7000);
 //            }
-            billService.update();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+       updatables.stream().forEach(updatable -> {
+           try {
+               updatable.update();
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+       });
     }
 
     public void start() {

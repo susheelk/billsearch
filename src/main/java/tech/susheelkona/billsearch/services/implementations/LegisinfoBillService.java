@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import tech.susheelkona.billsearch.services.cache.CachedEntity;
@@ -34,14 +35,12 @@ public class LegisinfoBillService extends XmlHttpService implements BillService 
     public void update() throws Exception {
         log.info("Downloading Bills...");
         long timeStart = System.currentTimeMillis();
-        List<Bill> list = new ArrayList<>();
 //        String url = URLEncoder.encode(address, "UTF-8");
         Document document = getDocument(XmlHttpService.LEGISINFO_LATEST_ORDER);
-
-
         NodeList nList = document.getElementsByTagName("Bill");
         System.out.println(nList.getLength());
-        System.out.println("Query Time: "+(System.currentTimeMillis()-timeStart));
+        List<Bill> list = new ArrayList<>(nList.getLength());
+        System.out.println("Bills Query Time: "+(System.currentTimeMillis()-timeStart));
         timeStart = System.currentTimeMillis();
 
         for (int i = 0; i < nList.getLength(); i++) {
@@ -156,7 +155,7 @@ public class LegisinfoBillService extends XmlHttpService implements BillService 
             }
         }
 
-        System.out.println("Parse Time: "+(System.currentTimeMillis()-timeStart));
+        System.out.println("Bills Parse Time: "+(System.currentTimeMillis()-timeStart));
 //        Collections.reverse(list);
         timeStart = System.currentTimeMillis();
 //        System.out.println("Reverse Time: "+(System.currentTimeMillis()-timeStart));
@@ -185,10 +184,17 @@ public class LegisinfoBillService extends XmlHttpService implements BillService 
         String sDate = eEvent.getAttribute("date").substring(0, 10);
         event.setDate(dateFormat.parse(sDate));
 
-        // Bill Tupe
-
 
         return event;
+    }
+
+    public Bill getByNumber(String number) throws Exception{
+
+        List<Bill> list = getAll().getData().stream().filter(bill -> bill.getNumber().matches(number)).collect(Collectors.toList());
+        if(!list.isEmpty() || list == null) {
+            return list.get(0);
+        }
+        return null;
     }
 
     @Override

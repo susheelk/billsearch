@@ -17,6 +17,8 @@ import java.net.URL;
 public abstract class XmlHttpService {
 
     public static final String LEGISINFO_LATEST_ORDER = "https://www.parl.ca/LegisInfo/Home.aspx?ParliamentSession=42-1&SortBy=BillLatestEventStartTime&SortDir=DESC&Language=E&download=xml";
+    public static final String LEGISINFO_VOTES = "https://www.ourcommons.ca/Parliamentarians/en/HouseVotes/ExportVotes?output=XML";
+    public static final String LEGISINFO_BALLOT = "https://www.ourcommons.ca/Parliamentarians/en/HouseVotes/ExportDetailsVotes?output=XML&parliament=42&session=1&vote=";
 
     public Document getDocument(String url) throws Exception{
 
@@ -55,10 +57,13 @@ public abstract class XmlHttpService {
 
 //        deployed=true;
 
-        if(deployed){
+        if(!deployed && url == LEGISINFO_LATEST_ORDER){
+            document = builder.parse(new File("data\\bills.xml"));
+        } else if (!deployed && url == LEGISINFO_VOTES) {
+            document = builder.parse(new File("data\\votes.xml"));
+        }
+        else {
             document = builder.parse(new URL(url).openStream());
-        } else {
-            document = builder.parse(new File("download.xml"));
         }
 
         document.getDocumentElement().normalize();

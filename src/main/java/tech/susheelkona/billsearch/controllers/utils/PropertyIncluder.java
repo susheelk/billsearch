@@ -23,21 +23,27 @@ import java.util.List;
  */
 public class PropertyIncluder {
 
-    private static final List<String> alwaysInclude = new ArrayList<String>(Arrays.asList("id", "url"));
+    private static final List<String> alwaysInclude = new ArrayList<>(Arrays.asList("id", "url"));
 
     private List<String> includedProperties;
+    private List<String> excludedProperties;
     private PaginatedResponse resource;
     private ObjectMapper objectMapper;
 
     @Autowired
     private MappingJackson2HttpMessageConverter springMvcJacksonConverter;
 
-    public PropertyIncluder(String[] includedProperties, PaginatedResponse resource) {
+    public PropertyIncluder(String[] includedProperties,PaginatedResponse resource) {
         this.includedProperties = Arrays.asList(includedProperties);
         this.resource = resource;
         objectMapper = new ObjectMapper();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         objectMapper.setDateFormat(format);
+    }
+
+    public PropertyIncluder(String[] includedProperties, String[] excludedProperties, PaginatedResponse resource) {
+        this(includedProperties, resource);
+//        this.excludedProperties = Arrays.asList(excludedProperties);
     }
 
     public List<String> getIncludedProperties() {
@@ -58,7 +64,8 @@ public class PropertyIncluder {
             public void serializeAsField(Object pojo, JsonGenerator jgen, SerializerProvider provider, PropertyWriter writer) throws Exception {
                 if (include(writer)) {
                     String fieldName = writer.getName().toString();
-                    if ((includedProperties.contains(fieldName)) || (includedProperties.contains("all")) || (alwaysInclude.contains(fieldName))) {
+                    if (((includedProperties.contains(fieldName)) || (includedProperties.contains("all")) || (alwaysInclude.contains(fieldName)))
+                            && !excludedProperties.contains(fieldName)) {
                         writer.serializeAsField(pojo, jgen, provider);
                         return;
                     }

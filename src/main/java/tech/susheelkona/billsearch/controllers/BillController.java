@@ -65,7 +65,7 @@ public class BillController {
             return new ResponseEntity<String>(includerFilter.serialize(), HttpStatus.ACCEPTED);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(new Error(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new Error(e.getStackTrace().toString()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
