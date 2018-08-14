@@ -11,6 +11,10 @@ public class Ballot {
         this.vote = vote;
     }
 
+    public Ballot() {
+
+    }
+
     public int getId() {
         return id;
     }

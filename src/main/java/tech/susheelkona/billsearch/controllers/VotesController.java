@@ -2,6 +2,9 @@ package tech.susheelkona.billsearch.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +21,7 @@ import tech.susheelkona.billsearch.services.cache.CachedEntity;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -56,6 +60,22 @@ public class VotesController {
             e.printStackTrace();
             return new ResponseEntity<>(new Error(e.getStackTrace().toString()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
 
+    @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    private ResponseEntity<?> getOne(@PathVariable int id) throws JsonProcessingException {
+        FilterProvider filters = new SimpleFilterProvider().addFilter("includer", SimpleBeanPropertyFilter.serializeAllExcept(Collections.emptySet()));
+        Filter<Vote> filter = new VotesFilter();
+        filter.addFilter("id", id+"");
+        try {
+            CachedEntity<Vote> cachedData = voteService.getAll();
+            cachedData.filter(filter);
+            return ResponseEntity.ok(objectMapper.writer(filters).writeValueAsString(cachedData.getData().get(0)));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return new ResponseEntity<>(new Error(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

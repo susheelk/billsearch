@@ -31,6 +31,7 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter')
     compile("org.springframework.boot:spring-boot-starter-web")
+	compile group: "net.sourceforge.htmlunit", name: "htmlunit", version "2.19"
 	testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('com.jayway.jsonpath:json-path')
 }

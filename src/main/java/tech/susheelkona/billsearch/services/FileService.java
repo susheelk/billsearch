@@ -9,10 +9,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 
 public class FileService {
 
@@ -23,10 +22,10 @@ public class FileService {
         return new File(getFileName(id)).exists();
     }
 
-    public List<Ballot> getBallotFromDisk(int id) {
-        File file = new File(getFileName(id));
-        Buffe
-        return new ArrayList<>();
+    public List<Ballot> getBallotFromDisk(int id) throws IOException {
+        String json = new String(Files.readAllBytes(Paths.get(getFileName(id))));
+        Ballot[] arr = objectMapper.readValue(json, Ballot[].class);
+        return Arrays.asList(arr);
     }
 
     public void persistBallot(int id, List<Ballot> list) throws IOException {

@@ -1,6 +1,8 @@
 package tech.susheelkona.billsearch.services.implementations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +91,7 @@ public class LegisinfoVoteService extends XmlHttpService implements VoteService 
 
                 vote.setBallots(getBallotForVote(vote.getId()));
 
+                vote.setResourceUri("/votes/"+vote.getId());
                 list.add(vote);
 
             }
@@ -136,6 +139,17 @@ public class LegisinfoVoteService extends XmlHttpService implements VoteService 
         }
 
         return ballots;
+    }
+
+    private void scrapeDescription(int id){
+        WebClient client = new WebClient();
+        client.getOptions().setCssEnabled(false);
+        client.getOptions().setJavaScriptEnabled(false);
+        try {
+            HtmlPage page = client.getPage(XmlHttpService.LEGISINFO_VOTE_HTML+id+"/");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public CachedEntity<Vote> getAll() throws Exception {

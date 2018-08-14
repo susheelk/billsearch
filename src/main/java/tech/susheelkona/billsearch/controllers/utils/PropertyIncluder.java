@@ -43,7 +43,7 @@ public class PropertyIncluder {
 
     public PropertyIncluder(String[] includedProperties, String[] excludedProperties, PaginatedResponse resource) {
         this(includedProperties, resource);
-//        this.excludedProperties = Arrays.asList(excludedProperties);
+        this.excludedProperties = Arrays.asList(excludedProperties);
     }
 
     public List<String> getIncludedProperties() {
