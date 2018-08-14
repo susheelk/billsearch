@@ -16,6 +16,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -35,6 +36,7 @@ public class PropertyIncluder {
 
     public PropertyIncluder(String[] includedProperties,PaginatedResponse resource) {
         this.includedProperties = Arrays.asList(includedProperties);
+        this.excludedProperties = Collections.emptyList();
         this.resource = resource;
         objectMapper = new ObjectMapper();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");

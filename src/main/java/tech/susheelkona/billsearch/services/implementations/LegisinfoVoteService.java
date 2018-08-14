@@ -2,6 +2,7 @@ package tech.susheelkona.billsearch.services.implementations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +11,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import tech.susheelkona.billsearch.model.Person;
 import tech.susheelkona.billsearch.model.legislation.Ballot;
 import tech.susheelkona.billsearch.model.legislation.Bill;
 import tech.susheelkona.billsearch.model.legislation.Vote;
@@ -21,7 +21,6 @@ import tech.susheelkona.billsearch.services.XmlHttpService;
 import tech.susheelkona.billsearch.services.cache.Cache;
 import tech.susheelkona.billsearch.services.cache.CachedEntity;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -92,6 +91,14 @@ public class LegisinfoVoteService extends XmlHttpService implements VoteService 
                 vote.setBallots(getBallotForVote(vote.getId()));
 
                 vote.setResourceUri("/votes/"+vote.getId());
+
+                if(fileService.voteDescriptionExists(vote.getId())){
+                    vote.setDescription(fileService.getVoteDescriptionFromDisk(vote.getId()));
+                } else {
+                    vote.setDescription(scrapeDescription(vote.getId()));
+                    fileService.persistVoteDescription(vote.getId(), vote.getDescription());
+                }
+//                System.out.println(vote.getDescription());
                 list.add(vote);
 
             }
@@ -105,10 +112,10 @@ public class LegisinfoVoteService extends XmlHttpService implements VoteService 
 
     private List<Ballot> getBallotForVote(int id) throws Exception {
         if (fileService.ballotExists(id)){
-            return fileService.getBallotFromDisk(id);
+            return fileService.getBallotsFromDisk(id);
         }
         List<Ballot> ballot = getBallotFromLegisinfo(id);
-        fileService.persistBallot(id, ballot);
+        fileService.persistBallots(id, ballot);
         return ballot;
     }
 
@@ -141,15 +148,22 @@ public class LegisinfoVoteService extends XmlHttpService implements VoteService 
         return ballots;
     }
 
-    private void scrapeDescription(int id){
+    private String scrapeDescription(int id){
         WebClient client = new WebClient();
-        client.getOptions().setCssEnabled(false);
+//        client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
         try {
             HtmlPage page = client.getPage(XmlHttpService.LEGISINFO_VOTE_HTML+id+"/");
+            HtmlElement element = page.getFirstByXPath("//div[@class='custom-message-container MainContentContainer voteDetailsText']");
+//            element = element.getFirstByXPath("//div[@class='container main-content']");
+//            element = element.getFirstByXPath("//div[@class='vote-details-main-content']");
+            return element.getTextContent() != null ? element.getTextContent() : "";
+        } catch (NullPointerException e){
+            return "";
         } catch (Exception e){
             e.printStackTrace();
         }
+        return null;
     }
 
     public CachedEntity<Vote> getAll() throws Exception {
