@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import tech.susheelkona.billsearch.controllers.utils.PaginatedResponse;
 import tech.susheelkona.billsearch.controllers.utils.PropertyIncluder;
@@ -46,6 +48,8 @@ public class BillController {
     @Autowired
     ObjectMapper objectMapper;
 
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<?> getAll(
             HttpServletRequest request,
@@ -54,6 +58,9 @@ public class BillController {
             @RequestParam(value = "include", defaultValue = "number,title,session,dateIntroduced,law,url", required = false) String[] include
     ) throws JsonProcessingException {
         try {
+
+            log.info(request.getRequestURL().toString());
+
             Filter<Bill> billFilter = new BillFilter(request);
 //            PaginatedResponse<Bill> paginatedRespone = billService.getAll().getPaginatedRespone(size, page);
             CachedEntity<Bill> cachedData = billService.getAll();

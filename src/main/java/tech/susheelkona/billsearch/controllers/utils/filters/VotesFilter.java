@@ -23,6 +23,10 @@ public class VotesFilter extends Filter<Vote> {
             switch (entry.getKey()){
                 case "id":
                     data = id(Integer.parseInt(entry.getValue()), data);
+                    break;
+                case "bill_id":
+                    data = billId(Integer.parseInt(entry.getValue()), data);
+                    break;
             }
         }
         return data;
@@ -30,5 +34,9 @@ public class VotesFilter extends Filter<Vote> {
 
     public List<Vote> id(int id, List<Vote> data) {
         return data.stream().filter(vote -> vote.getId() == id).collect(Collectors.toList());
+    }
+
+    public List<Vote> billId(int id, List<Vote> data){
+        return data.stream().filter(vote -> vote.getBillId() == id).collect(Collectors.toList());
     }
 }

@@ -14,6 +14,7 @@ public class Vote extends Resource {
     private Date date;
     private String title;
     private String billUrl;
+    private int billId;
     private String description;
     private int yeas;
     private int nays;
@@ -41,6 +42,14 @@ public class Vote extends Resource {
 
     public String getBillUrl() {
         return billUrl;
+    }
+
+    public int getBillId() {
+        return billId;
+    }
+
+    public void setBillId(int billId) {
+        this.billId = billId;
     }
 
     public void setBillUrl(String billUrl) {

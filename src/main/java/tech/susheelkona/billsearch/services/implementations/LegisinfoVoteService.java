@@ -87,7 +87,7 @@ public class LegisinfoVoteService extends XmlHttpService implements VoteService 
                 String sBill = element.getElementsByTagName("BillNumberCode").item(0).getTextContent();
                 Bill bill = billService.getByNumber(sBill);
                 vote.setBillUrl(bill == null ? null : bill.getResourceUri());
-
+                vote.setBillId(bill == null ? 0 : bill.getId());
                 vote.setBallots(getBallotForVote(vote.getId()));
 
                 vote.setResourceUri("/votes/"+vote.getId());
