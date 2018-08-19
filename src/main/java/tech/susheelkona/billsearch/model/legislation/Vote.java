@@ -22,15 +22,6 @@ public class Vote extends Resource {
 
     private List<Ballot> ballots;
 
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public Date getDate() {
         return date;
