@@ -5,4 +5,5 @@ import tech.susheelkona.billsearch.services.cache.CachedEntity;
 
 public interface VoteService extends Updatable{
     CachedEntity<Vote> getAll() throws Exception;
+    Vote getById(int id) throws Exception;
 }

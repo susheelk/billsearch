@@ -65,12 +65,8 @@ public class VotesController {
     @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<?> getOne(@PathVariable int id) throws JsonProcessingException {
         FilterProvider filters = new SimpleFilterProvider().addFilter("includer", SimpleBeanPropertyFilter.serializeAllExcept(Collections.emptySet()));
-        Filter<Vote> filter = new VotesFilter();
-        filter.addFilter("id", id+"");
         try {
-            CachedEntity<Vote> cachedData = voteService.getAll();
-            cachedData.filter(filter);
-            return ResponseEntity.ok(objectMapper.writer(filters).writeValueAsString(cachedData.getData().get(0)));
+            return ResponseEntity.ok(objectMapper.writer(filters).writeValueAsString(voteService.getById(id)));
         } catch (NullPointerException e) {
             e.printStackTrace();
             return ResponseEntity.noContent().build();

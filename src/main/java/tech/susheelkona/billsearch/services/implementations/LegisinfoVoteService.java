@@ -11,6 +11,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import tech.susheelkona.billsearch.controllers.utils.filters.Filter;
+import tech.susheelkona.billsearch.controllers.utils.filters.VotesFilter;
 import tech.susheelkona.billsearch.model.legislation.Ballot;
 import tech.susheelkona.billsearch.model.legislation.Bill;
 import tech.susheelkona.billsearch.model.legislation.Vote;
@@ -88,7 +90,7 @@ public class LegisinfoVoteService extends XmlHttpService implements VoteService 
                 Bill bill = billService.getByNumber(sBill);
                 vote.setBillUrl(bill == null ? null : bill.getResourceUri());
                 vote.setBillId(bill == null ? 0 : bill.getId());
-                vote.setBallots(getBallotForVote(vote.getId()));
+//                vote.setBallots(getBallotForVote(vote.getId()));
 
                 vote.setResourceUri("/votes/"+vote.getId());
 
@@ -172,5 +174,15 @@ public class LegisinfoVoteService extends XmlHttpService implements VoteService 
         copy.setLastUpdated(cache.getLastUpdated());
         copy.setData(new ArrayList<>(cache.getData()));
         return copy;
+    }
+
+    public Vote getById(int id) throws Exception {
+        Filter<Vote> filter = new VotesFilter();
+        filter.addFilter("id", id+"");
+        CachedEntity<Vote> cachedData = getAll();
+        cachedData.filter(filter);
+        Vote vote = cachedData.getData().get(0);
+        vote.setBallots(getBallotForVote(id));
+        return vote;
     }
 }
