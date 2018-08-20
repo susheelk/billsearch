@@ -53,10 +53,10 @@ public class FileService {
     }
 
     private String getBallotFileName(int id) {
-        return "data\\ballots\\vote_"+id+".json";
+        return "data/ballots/vote_"+id+".json";
     }
 
     private String getVoteDescriptionFileName(int id) {
-        return "data\\vote_descriptions\\vote_"+id+".txt";
+        return "data/vote_descriptions/vote_"+id+".txt";
     }
 }
