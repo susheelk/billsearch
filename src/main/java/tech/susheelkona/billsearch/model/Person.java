@@ -45,4 +45,8 @@ public class Person extends Resource {
         return firstName + " " + lastName;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return ((Person)obj).getName().matches(getName());
+    }
 }

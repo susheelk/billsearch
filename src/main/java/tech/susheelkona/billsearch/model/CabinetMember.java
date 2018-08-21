@@ -23,4 +23,6 @@ public class CabinetMember extends Person {
     public String getName() {
         return super.getName();
     }
+
+
 }

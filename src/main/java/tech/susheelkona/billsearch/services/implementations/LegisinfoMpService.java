@@ -35,6 +35,8 @@ public class LegisinfoMpService extends XmlHttpService implements MpService {
         timeStart = System.currentTimeMillis();
         List<CabinetMember> list = new ArrayList<>();
 
+//        List<Integer> ordPrefList = new ArrayList<>();
+
         for(int i = 0; i < nodeList.getLength(); i++){
             Node node = nodeList.item(i);
 
@@ -42,17 +44,27 @@ public class LegisinfoMpService extends XmlHttpService implements MpService {
                 Element element = (Element) node;
                 CabinetMember member = new CabinetMember();
 
-                String order = element.getElementsByTagName("OrderOfPrecedence").item(0).getTextContent();
-                member.setOrderOfPrecedence(Integer.parseInt(order));
 
                 String firstName = element.getElementsByTagName("PersonOfficialFirstName").item(0).getTextContent();
                 member.setFirstName(firstName);
                 String lastName = element.getElementsByTagName("PersonOfficialLastName").item(0).getTextContent();
                 member.setLastName(lastName);
 
-                member.setPosition(element.getElementsByTagName("Title").item(0).getTextContent());
+                String sOrder = element.getElementsByTagName("OrderOfPrecedence").item(0).getTextContent();
+                int order = Integer.parseInt(sOrder);
+//                ordPrefList.add(order);
+                member.setOrderOfPrecedence(order);
+
                 member.setTitle("MP");
-                list.add(member);
+                String position = element.getElementsByTagName("Title").item(0).getTextContent();
+                if(list.contains(member)){
+                    CabinetMember prev = list.get(list.indexOf(member));
+                    prev.setPosition(prev.getPosition()+" and "+position);
+                } else {
+                    member.setPosition(position);
+                    list.add(member);
+                }
+
             }
         }
         System.out.println("Minister Parse time: "+(System.currentTimeMillis()-timeStart));
