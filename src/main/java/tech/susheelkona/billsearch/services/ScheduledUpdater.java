@@ -21,9 +21,13 @@ public class ScheduledUpdater {
     @Autowired
     VoteService voteService;
 
+    @Autowired
+    MpService mpService;
+
     @Scheduled(fixedRate = 60000*60)
     public void updateAll() {
         new MultiThreadUpdater(billService, voteService).start();
+        new MultiThreadUpdater(mpService).start();
 //        new MultiThreadUpdater(voteService).start();
     }
 }
@@ -34,6 +38,10 @@ class MultiThreadUpdater implements Runnable {
     private Thread thread;
     List<Updatable> updatables;
 
+    /**
+     *
+     * @param updatables services to run on one thread
+     */
     public MultiThreadUpdater(Updatable ...updatables) {
         this.updatables = Arrays.asList(updatables);
     }

@@ -4,7 +4,7 @@ package tech.susheelkona.billsearch.model;
  * @author Susheel
  */
 
-public class Person extends Resource{
+public class Person extends Resource {
     private String firstName;
     private String lastName;
     private String title;
