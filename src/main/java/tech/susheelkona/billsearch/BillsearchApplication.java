@@ -2,15 +2,13 @@ package tech.susheelkona.billsearch;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import tech.susheelkona.billsearch.services.BillService;
-import tech.susheelkona.billsearch.services.FileService;
-import tech.susheelkona.billsearch.services.MpService;
-import tech.susheelkona.billsearch.services.VoteService;
+import tech.susheelkona.billsearch.services.*;
 import tech.susheelkona.billsearch.services.implementations.LegisinfoBillService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import tech.susheelkona.billsearch.services.implementations.LegisinfoMpService;
+import tech.susheelkona.billsearch.services.implementations.LegisinfoNewsService;
 import tech.susheelkona.billsearch.services.implementations.LegisinfoVoteService;
 
 import java.text.DateFormat;
@@ -43,6 +41,11 @@ public class BillsearchApplication {
     @Bean
     public MpService mpService(){
 	    return new LegisinfoMpService();
+    }
+
+    @Bean
+    public NewsService newsService() {
+	    return new LegisinfoNewsService();
     }
 
     @Bean

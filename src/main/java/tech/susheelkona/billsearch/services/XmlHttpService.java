@@ -21,6 +21,7 @@ public abstract class XmlHttpService {
     public static final String LEGISINFO_BALLOT = "https://www.ourcommons.ca/Parliamentarians/en/HouseVotes/ExportDetailsVotes?output=XML&parliament=42&session=1&vote=";
     public static final String LEGISINFO_VOTE_HTML = "https://www.ourcommons.ca/Parliamentarians/en/votes/42/1/";
     public static final String LEGISINFO_MINISTERS = "https://www.ourcommons.ca/Parliamentarians/en/ministries/Export?output=XML";
+    public static final String LEGISINFO_UPDATES = "https://www.parl.ca/LegisInfo/RSSFeed.aspx?download=rss&Language=E&source=LegislationEvents";
 
     public Document getDocument(String url) throws Exception{
 

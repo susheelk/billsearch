@@ -27,9 +27,16 @@ public class VotesFilter extends Filter<Vote> {
                 case "bill_id":
                     data = billId(Integer.parseInt(entry.getValue()), data);
                     break;
+                case "status":
+                    data = status(entry.getValue(), data);
+
             }
         }
         return data;
+    }
+
+    private List<Vote> status(String value, List<Vote> data) {
+        return data.stream().filter(vote -> vote.getResult().matches(value)).collect(Collectors.toList());
     }
 
     public List<Vote> id(int id, List<Vote> data) {

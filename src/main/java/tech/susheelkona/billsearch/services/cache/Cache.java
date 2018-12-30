@@ -1,6 +1,7 @@
 package tech.susheelkona.billsearch.services.cache;
 
 import tech.susheelkona.billsearch.model.CabinetMember;
+import tech.susheelkona.billsearch.model.NewsItem;
 import tech.susheelkona.billsearch.model.legislation.Bill;
 import tech.susheelkona.billsearch.model.legislation.Vote;
 
@@ -13,6 +14,7 @@ public final class Cache {
     private static CachedEntity<Bill> bills = new CachedEntity<>();
     private static CachedEntity<Vote> votes = new CachedEntity<>();
     private static CachedEntity<CabinetMember> cabinetMembers = new CachedEntity<>();
+    private static CachedEntity<NewsItem> newsItems = new CachedEntity<>();
 
 
     public synchronized static CachedEntity<Bill> getBills() {
@@ -38,4 +40,13 @@ public final class Cache {
     public static synchronized void updateCabinetMembers(List<CabinetMember> list) {
        cabinetMembers = new CachedEntity<>(list);
     }
+
+    public static synchronized CachedEntity<NewsItem> getNewsItems(){
+        return newsItems;
+    }
+
+    public static synchronized void updateNewsItems(List<NewsItem> list) {
+        newsItems = new CachedEntity<>(list);
+    }
+
 }

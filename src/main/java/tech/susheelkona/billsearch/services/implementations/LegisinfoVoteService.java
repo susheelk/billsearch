@@ -95,10 +95,10 @@ public class LegisinfoVoteService extends XmlHttpService implements VoteService 
                 vote.setResourceUri("/votes/"+vote.getId());
 
                 if(fileService.voteDescriptionExists(vote.getId())){
-                    log.info("Getting from file: "+vote.getId());
+//                    log.info("Getting from file: "+vote.getId());
                     vote.setDescription(fileService.getVoteDescriptionFromDisk(vote.getId()));
                 } else {
-                    log.info("Getting from html: "+vote.getId());
+//                    log.info("Getting from html: "+vote.getId());
                     vote.setDescription(scrapeDescription(vote.getId()));
                     fileService.persistVoteDescription(vote.getId(), vote.getDescription());
                 }

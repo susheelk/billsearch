@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Susheel Kona
  */
-public interface BillService extends Updatable{
+public interface BillService extends Updatable {
     CachedEntity<Bill> getAll() throws Exception;
     Bill getByNumber(String number) throws Exception;
 }

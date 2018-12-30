@@ -67,8 +67,6 @@ public class BillController {
             
             cachedData.filter(billFilter);
             PropertyIncluder includerFilter = new PropertyIncluder(include, cachedData.getPaginatedRespone(size, page));
-
-
             return new ResponseEntity<String>(includerFilter.serialize(), HttpStatus.ACCEPTED);
         } catch (Exception e) {
             e.printStackTrace();

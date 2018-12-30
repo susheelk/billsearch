@@ -4,6 +4,7 @@ package tech.susheelkona.billsearch.model.legislation;
 
 
 import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import tech.susheelkona.billsearch.model.Person;
 import tech.susheelkona.billsearch.model.Resource;
 import tech.susheelkona.billsearch.model.Searchable;
@@ -131,6 +132,11 @@ public class Bill extends Resource implements Searchable {
 
     public void setLaw(boolean law) {
         this.law = law;
+    }
+
+    @JsonGetter("votesUrl")
+    public String getVotesUrl() {
+        return "/votes?bill_id="+getId();
     }
 
     @Override

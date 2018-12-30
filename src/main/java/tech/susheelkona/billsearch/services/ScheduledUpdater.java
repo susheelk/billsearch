@@ -24,10 +24,13 @@ public class ScheduledUpdater {
     @Autowired
     MpService mpService;
 
+    @Autowired
+    NewsService newsService;
+
     @Scheduled(fixedRate = 60000*60)
     public void updateAll() {
         new MultiThreadUpdater(billService, voteService).start();
-        new MultiThreadUpdater(mpService).start();
+        new MultiThreadUpdater(mpService, newsService).start();
 //        new MultiThreadUpdater(voteService).start();
     }
 }
