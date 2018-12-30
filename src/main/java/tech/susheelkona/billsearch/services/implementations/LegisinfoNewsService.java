@@ -46,8 +46,21 @@ public class LegisinfoNewsService extends XmlHttpService implements NewsService 
                 String title = fullTitle.substring(comInd+2);
                 String billNum = fullTitle.substring(0, comInd);
 
+                Element eDesc = (Element) element.getElementsByTagName("description").item(0);
+                fullTitle = eDesc.getTextContent();
+                comInd = fullTitle.indexOf(',');
+                String text = fullTitle.substring(comInd+2);
+                newsItem.setDescription(text);
+
+                Element eDate = (Element) element.getElementsByTagName("pubDate").item(0);
+                String sDate = eDate.getTextContent();
+                int spInd = sDate.indexOf("0");
+                sDate = sDate.substring(0, spInd-1);
+                newsItem.setDate(sDate);
+
                 newsItem.setTitle(title);
                 newsItem.setBillNumber(billNum);
+                newsItem.generateTagline();
                 list.add(newsItem);
             }
         }

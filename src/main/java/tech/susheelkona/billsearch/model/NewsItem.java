@@ -3,14 +3,14 @@ package tech.susheelkona.billsearch.model;
 import java.util.Date;
 
 public class NewsItem {
-    public String title;
-    public String billNumber;
-    public String url;
-    public Date date;
-    public String description;
+    private String title;
+    private String billNumber;
+    private String url;
+    private String date;
+    private String description;
+    protected String tagline;
 
     public String getTitle() {
-
         return title;
     }
 
@@ -34,11 +34,11 @@ public class NewsItem {
         this.url = url;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -48,5 +48,17 @@ public class NewsItem {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getTagline() {
+        return tagline;
+    }
+
+    public void setTagline(String tagline) {
+        this.tagline = tagline;
+    }
+
+    public void generateTagline() {
+        setTagline(billNumber+", "+title);
     }
 }
