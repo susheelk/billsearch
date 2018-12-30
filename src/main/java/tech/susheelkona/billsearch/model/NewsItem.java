@@ -1,5 +1,7 @@
 package tech.susheelkona.billsearch.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+
 import java.util.Date;
 
 public class NewsItem {
@@ -9,6 +11,17 @@ public class NewsItem {
     private String date;
     private String description;
     protected String tagline;
+    private int billId;
+
+
+    @JsonGetter("billId")
+    public int getBillId() {
+        return billId;
+    }
+
+    public void setBillId(int billId) {
+        this.billId = billId;
+    }
 
     public String getTitle() {
         return title;
@@ -24,6 +37,7 @@ public class NewsItem {
 
     public void setBillNumber(String billNumber) {
         this.billNumber = billNumber;
+
     }
 
     public String getUrl() {

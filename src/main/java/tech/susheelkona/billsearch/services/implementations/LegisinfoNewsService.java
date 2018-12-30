@@ -2,11 +2,14 @@ package tech.susheelkona.billsearch.services.implementations;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import tech.susheelkona.billsearch.model.NewsItem;
+import tech.susheelkona.billsearch.model.legislation.Bill;
+import tech.susheelkona.billsearch.services.BillService;
 import tech.susheelkona.billsearch.services.NewsService;
 import tech.susheelkona.billsearch.services.Updatable;
 import tech.susheelkona.billsearch.services.XmlHttpService;
@@ -18,6 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LegisinfoNewsService extends XmlHttpService implements NewsService {
+
+    @Autowired
+    BillService billService;
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -57,6 +63,12 @@ public class LegisinfoNewsService extends XmlHttpService implements NewsService 
                 int spInd = sDate.indexOf("0");
                 sDate = sDate.substring(0, spInd-1);
                 newsItem.setDate(sDate);
+
+                Bill bill = billService.getByNumber(billNum);
+                if (bill != null){
+                    newsItem.setBillId(bill.getId());
+                    newsItem.setUrl("/bills/"+bill.getId());
+                }
 
                 newsItem.setTitle(title);
                 newsItem.setBillNumber(billNum);
