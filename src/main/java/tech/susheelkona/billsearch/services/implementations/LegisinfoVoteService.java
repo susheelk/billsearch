@@ -114,7 +114,8 @@ public class LegisinfoVoteService extends XmlHttpService implements VoteService 
 
 //    private void attach
 
-    private List<Ballot> getBallotForVote(int id) throws Exception {
+    @Override
+    public List<Ballot> getBallotForVote(int id) throws Exception {
         if (fileService.ballotExists(id)){
             return fileService.getBallotsFromDisk(id);
         }

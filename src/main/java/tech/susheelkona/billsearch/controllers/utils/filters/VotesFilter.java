@@ -27,7 +27,7 @@ public class VotesFilter extends Filter<Vote> {
                 case "bill_id":
                     data = billId(Integer.parseInt(entry.getValue()), data);
                     break;
-                case "status":
+                case "result":
                     data = status(entry.getValue(), data);
 
             }

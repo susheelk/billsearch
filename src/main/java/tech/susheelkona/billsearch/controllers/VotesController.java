@@ -14,6 +14,7 @@ import tech.susheelkona.billsearch.controllers.utils.Error;
 import tech.susheelkona.billsearch.controllers.utils.PropertyIncluder;
 import tech.susheelkona.billsearch.controllers.utils.filters.Filter;
 import tech.susheelkona.billsearch.controllers.utils.filters.VotesFilter;
+import tech.susheelkona.billsearch.model.legislation.Ballot;
 import tech.susheelkona.billsearch.model.legislation.Vote;
 import tech.susheelkona.billsearch.services.VoteService;
 import tech.susheelkona.billsearch.services.cache.CachedEntity;
@@ -43,7 +44,8 @@ public class VotesController {
             HttpServletRequest request,
             @RequestParam(value = "page", defaultValue = "1", required = false) int page,
             @RequestParam(value = "size", defaultValue = "10", required = false) int size,
-            @RequestParam(value = "include", defaultValue = "all", required = false) String[] include
+            @RequestParam(value = "include", defaultValue = "all", required = false) String[] include,
+            @RequestParam(value = "mps", defaultValue = "[]", required = false) String[] mps
     ) throws JsonProcessingException {
 
         try {
@@ -51,8 +53,27 @@ public class VotesController {
             CachedEntity<Vote> cachedData = voteService.getAll();
             cachedData.filter(voteFilter);
 
-            String[] exclude = {"ballots"};
+            if(mps.length != 0){
+                List<Vote> votes = new ArrayList<>();
+                List<String> mpNames = Arrays.asList(mps);
+                mpNames.forEach(str -> str.replace("+", " "));
+                for(Vote vote: cachedData.getData()){
+                    List<Ballot> ballots = voteService.getBallotForVote(vote.getId());
+                    List<Ballot> neededBallots = new ArrayList<>();
+                    for (Ballot ballot: ballots) {
+                        if (mpNames.contains(ballot.getName())){
+                            neededBallots.add(ballot);
+                        }
+                    }
+                    vote.setBallots(neededBallots);
+                    if (neededBallots.size() == mpNames.size()){
+                        votes.add(vote);
+                    }
+                }
+                cachedData.setData(votes);
+            }
 
+            String[] exclude = {};
             PropertyIncluder includerFilter = new PropertyIncluder(include, exclude, cachedData.getPaginatedRespone(size, page));
 
             return new ResponseEntity<String>(includerFilter.serialize(), HttpStatus.ACCEPTED);
