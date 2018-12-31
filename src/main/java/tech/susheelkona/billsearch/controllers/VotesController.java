@@ -56,7 +56,6 @@ public class VotesController {
             String[] exclude = {};
 
             if(mps.length != 0){
-
                 System.out.println("MP!");
                 List<Vote> votes = new ArrayList<>();
                 List<String> mpNames = Arrays.asList(mps);
@@ -70,6 +69,7 @@ public class VotesController {
                         }
                     }
                     Vote copy = new Vote(vote);
+                    copy.setId(vote.getId());
                     copy.setBallots(neededBallots);
                     if (neededBallots.size() == mpNames.size()){
                         votes.add(copy);
