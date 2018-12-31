@@ -22,6 +22,20 @@ public class Vote extends Resource {
 
     private List<Ballot> ballots;
 
+    public Vote(){}
+
+    public Vote(Vote vote) {
+        this.id = vote.getId();
+        this.date = vote.getDate();
+        this.title = vote.getTitle();
+        this.billUrl = vote.getBillUrl();
+        this.billId = vote.getBillId();
+        this.description = vote.getDescription();
+        this.yeas = vote.getYeas();
+        this.nays = vote.getNays();
+        this.result = vote.getResult();
+    }
+
 
     public Date getDate() {
         return date;

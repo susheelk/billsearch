@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import org.eclipse.jetty.util.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -45,15 +46,18 @@ public class VotesController {
             @RequestParam(value = "page", defaultValue = "1", required = false) int page,
             @RequestParam(value = "size", defaultValue = "10", required = false) int size,
             @RequestParam(value = "include", defaultValue = "all", required = false) String[] include,
-            @RequestParam(value = "mps", defaultValue = "[]", required = false) String[] mps
+            @RequestParam(value = "mps", defaultValue = "", required = false) String[] mps
     ) throws JsonProcessingException {
 
         try {
             Filter<Vote> voteFilter = new VotesFilter(request);
             CachedEntity<Vote> cachedData = voteService.getAll();
             cachedData.filter(voteFilter);
+            String[] exclude = {};
 
             if(mps.length != 0){
+
+                System.out.println("MP!");
                 List<Vote> votes = new ArrayList<>();
                 List<String> mpNames = Arrays.asList(mps);
                 mpNames.forEach(str -> str.replace("+", " "));
@@ -65,15 +69,16 @@ public class VotesController {
                             neededBallots.add(ballot);
                         }
                     }
-                    vote.setBallots(neededBallots);
+                    Vote copy = new Vote(vote);
+                    copy.setBallots(neededBallots);
                     if (neededBallots.size() == mpNames.size()){
-                        votes.add(vote);
+                        votes.add(copy);
                     }
                 }
+                cachedData = new CachedEntity<>();
                 cachedData.setData(votes);
             }
 
-            String[] exclude = {};
             PropertyIncluder includerFilter = new PropertyIncluder(include, exclude, cachedData.getPaginatedRespone(size, page));
 
             return new ResponseEntity<String>(includerFilter.serialize(), HttpStatus.ACCEPTED);
