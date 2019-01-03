@@ -1,5 +1,6 @@
 package tech.susheelkona.billsearch.controllers.utils;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -12,6 +13,8 @@ import java.util.List;
  */
 @JsonPropertyOrder({"lastUpdated", "nextPage", "previousPage", "totalSize", "data"})
 public class PaginatedResponse<T> {
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private Date lastUpdated;
     private String nextPage;
     private String previousPage;
