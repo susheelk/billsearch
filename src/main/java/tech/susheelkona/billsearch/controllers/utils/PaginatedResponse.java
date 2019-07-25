@@ -36,7 +36,6 @@ public class PaginatedResponse<T> {
         this.lastUpdated = lastUpdated;
     }
 
-
     public String getNextPage() {
         return nextPage;
     }

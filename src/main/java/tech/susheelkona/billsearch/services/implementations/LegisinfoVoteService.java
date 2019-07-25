@@ -144,8 +144,9 @@ public class LegisinfoVoteService extends XmlHttpService implements VoteService 
                 String lName = element.getElementsByTagName("LastName").item(0).getTextContent();
 
                 String vote = element.getElementsByTagName("VoteValueName").item(0).getTextContent();
+                String party = element.getElementsByTagName("PartyName").item(0).getTextContent();
 
-                Ballot ballot = new Ballot(pid, fName+" "+lName, vote);
+                Ballot ballot = new Ballot(pid, fName+" "+lName, vote, party);
                 ballots.add(ballot);
             }
         }

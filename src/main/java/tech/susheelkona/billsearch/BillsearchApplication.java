@@ -20,7 +20,6 @@ public class BillsearchApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BillsearchApplication.class, args);
-
     }
 
     @Bean

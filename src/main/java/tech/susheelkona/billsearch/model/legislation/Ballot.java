@@ -4,11 +4,13 @@ public class Ballot {
     private int id;
     private String name;
     private String vote;
+    private String party;
 
-    public Ballot(int id, String name, String vote) {
+    public Ballot(int id, String name, String vote, String party) {
         this.id = id;
         this.name = name;
         this.vote = vote;
+        this.party = party;
     }
 
     public Ballot() {
@@ -37,5 +39,13 @@ public class Ballot {
 
     public void setVote(String vote) {
         this.vote = vote;
+    }
+
+    public String getParty() {
+        return party;
+    }
+
+    public void setParty(String party) {
+        this.party = party;
     }
 }

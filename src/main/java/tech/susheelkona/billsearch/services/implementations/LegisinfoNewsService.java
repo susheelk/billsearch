@@ -60,8 +60,8 @@ public class LegisinfoNewsService extends XmlHttpService implements NewsService 
 
                 Element eDate = (Element) element.getElementsByTagName("pubDate").item(0);
                 String sDate = eDate.getTextContent();
-                int spInd = sDate.indexOf("0");
-                sDate = sDate.substring(0, spInd-1);
+                int spInd = sDate.indexOf("00:");
+                sDate = sDate.substring(0, spInd);
                 newsItem.setDate(sDate);
 
                 Bill bill = billService.getByNumber(billNum);

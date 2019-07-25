@@ -64,7 +64,7 @@ public class BillController {
             Filter<Bill> billFilter = new BillFilter(request);
 //            PaginatedResponse<Bill> paginatedRespone = billService.getAll().getPaginatedRespone(size, page);
             CachedEntity<Bill> cachedData = billService.getAll();
-            
+
             cachedData.filter(billFilter);
             PropertyIncluder includerFilter = new PropertyIncluder(include, cachedData.getPaginatedRespone(size, page));
             return new ResponseEntity<String>(includerFilter.serialize(), HttpStatus.ACCEPTED);
@@ -79,7 +79,7 @@ public class BillController {
         FilterProvider filters = new SimpleFilterProvider().addFilter("includer", SimpleBeanPropertyFilter.serializeAllExcept(Collections.emptySet()));
         Error error;
         try {
-            Bill bill = billService.getAll().getData().stream().filter(bill1 -> bill1.getId()==id).collect(Collectors.toList()).get(0);
+            Bill bill = billService.getAll().getData().stream().filter(bill1 -> bill1.getId() == id).collect(Collectors.toList()).get(0);
             return ResponseEntity.ok(objectMapper.writer(filters).writeValueAsString(bill));
         } catch (IndexOutOfBoundsException e) {
             return new ResponseEntity<>(new Error("Not found!"), HttpStatus.NOT_FOUND);
