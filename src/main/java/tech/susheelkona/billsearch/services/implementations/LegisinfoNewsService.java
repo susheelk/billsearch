@@ -9,10 +9,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import tech.susheelkona.billsearch.model.NewsItem;
 import tech.susheelkona.billsearch.model.legislation.Bill;
-import tech.susheelkona.billsearch.services.BillService;
-import tech.susheelkona.billsearch.services.NewsService;
-import tech.susheelkona.billsearch.services.Updatable;
-import tech.susheelkona.billsearch.services.XmlHttpService;
+import tech.susheelkona.billsearch.services.*;
 import tech.susheelkona.billsearch.services.cache.Cache;
 import tech.susheelkona.billsearch.services.cache.CachedEntity;
 
@@ -32,7 +29,7 @@ public class LegisinfoNewsService extends XmlHttpService implements NewsService 
     public void update() throws Exception {
         log.info("Downloading News Items....");
         long timeStart = System.currentTimeMillis();
-        Document document = getDocument(XmlHttpService.LEGISINFO_UPDATES);
+        Document document = getDocument(Urls.LEGISINFO_UPDATES);
         NodeList nList = document.getElementsByTagName("item");
         log.info(nList.getLength()+" news items found");
         List<NewsItem> list = new ArrayList<>(nList.getLength());

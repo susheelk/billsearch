@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 import tech.susheelkona.billsearch.model.CabinetMember;
 import tech.susheelkona.billsearch.model.Person;
 import tech.susheelkona.billsearch.services.MpService;
+import tech.susheelkona.billsearch.services.Urls;
 import tech.susheelkona.billsearch.services.XmlHttpService;
 import tech.susheelkona.billsearch.services.cache.Cache;
 import tech.susheelkona.billsearch.services.cache.CachedEntity;
@@ -29,7 +30,7 @@ public class LegisinfoMpService extends XmlHttpService implements MpService {
 
     private List<CabinetMember> getMinisters() throws Exception {
         long timeStart = System.currentTimeMillis();
-        Document document = getDocument(XmlHttpService.LEGISINFO_MINISTERS);
+        Document document = getDocument(Urls.LEGISINFO_MINISTERS);
         NodeList nodeList = document.getElementsByTagName("Minister");
         System.out.println("Minister Query time: "+(System.currentTimeMillis()-timeStart));
         timeStart = System.currentTimeMillis();

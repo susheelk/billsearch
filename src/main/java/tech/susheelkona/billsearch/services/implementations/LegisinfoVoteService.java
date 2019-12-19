@@ -16,10 +16,7 @@ import tech.susheelkona.billsearch.controllers.utils.filters.VotesFilter;
 import tech.susheelkona.billsearch.model.legislation.Ballot;
 import tech.susheelkona.billsearch.model.legislation.Bill;
 import tech.susheelkona.billsearch.model.legislation.Vote;
-import tech.susheelkona.billsearch.services.BillService;
-import tech.susheelkona.billsearch.services.FileService;
-import tech.susheelkona.billsearch.services.VoteService;
-import tech.susheelkona.billsearch.services.XmlHttpService;
+import tech.susheelkona.billsearch.services.*;
 import tech.susheelkona.billsearch.services.cache.Cache;
 import tech.susheelkona.billsearch.services.cache.CachedEntity;
 
@@ -53,7 +50,7 @@ public class LegisinfoVoteService extends XmlHttpService implements VoteService 
     private List<Vote> getVotes() throws Exception{
 
         long timeStart = System.currentTimeMillis();
-        Document document = getDocument(XmlHttpService.LEGISINFO_VOTES);
+        Document document = getDocument(Urls.LEGISINFO_VOTES);
         NodeList nList = document.getElementsByTagName("VoteParticipant");
         numberVotes = nList.getLength();
         log.info("Votes Length: "+numberVotes);
@@ -126,7 +123,7 @@ public class LegisinfoVoteService extends XmlHttpService implements VoteService 
 
 
     private List<Ballot> getBallotFromLegisinfo(int id) throws Exception{
-        Document document = getDocument(XmlHttpService.LEGISINFO_BALLOT+id);
+        Document document = getDocument(Urls.LEGISINFO_BALLOT+id);
         NodeList nList = document.getElementsByTagName("VoteParticipant");
         List<Ballot> ballots = new ArrayList<>();
 
@@ -159,7 +156,7 @@ public class LegisinfoVoteService extends XmlHttpService implements VoteService 
 //        client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
         try {
-            HtmlPage page = client.getPage(XmlHttpService.LEGISINFO_VOTE_HTML+id+"/");
+            HtmlPage page = client.getPage(Urls.LEGISINFO_VOTE_HTML+id+"/");
             HtmlElement element = page.getFirstByXPath("//div[@class='custom-message-container MainContentContainer voteDetailsText']");
 //            element = element.getFirstByXPath("//div[@class='container main-content']");
 //            element = element.getFirstByXPath("//div[@class='vote-details-main-content']");

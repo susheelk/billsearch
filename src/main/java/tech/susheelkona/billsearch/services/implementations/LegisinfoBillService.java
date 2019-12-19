@@ -10,6 +10,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import tech.susheelkona.billsearch.services.BillService;
+import tech.susheelkona.billsearch.services.Urls;
 import tech.susheelkona.billsearch.services.cache.Cache;
 import tech.susheelkona.billsearch.services.XmlHttpService;
 
@@ -36,7 +37,7 @@ public class LegisinfoBillService extends XmlHttpService implements BillService 
         log.info("Downloading Bills...");
         long timeStart = System.currentTimeMillis();
 //        String url = URLEncoder.encode(address, "UTF-8");
-        Document document = getDocument(XmlHttpService.LEGISINFO_LATEST_ORDER);
+        Document document = getDocument(Urls.LEGISINFO_LATEST_ORDER);
         NodeList nList = document.getElementsByTagName("Bill");
         System.out.println(nList.getLength());
         List<Bill> list = new ArrayList<>(nList.getLength());
