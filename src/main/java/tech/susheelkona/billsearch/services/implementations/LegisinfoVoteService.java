@@ -104,7 +104,7 @@ public class LegisinfoVoteService extends XmlHttpService implements VoteService 
 
             }
         }
-        Collections.reverse(list);
+//        Collections.reverse(list);
         System.out.println("Vote List Parse time: "+(System.currentTimeMillis()-timeStart));
         return list;
     }
