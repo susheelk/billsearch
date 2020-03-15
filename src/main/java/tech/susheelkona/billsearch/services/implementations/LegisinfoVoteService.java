@@ -51,7 +51,7 @@ public class LegisinfoVoteService extends XmlHttpService implements VoteService 
 
         long timeStart = System.currentTimeMillis();
         Document document = getDocument(Urls.LEGISINFO_VOTES);
-        NodeList nList = document.getElementsByTagName("VoteParticipant");
+        NodeList nList = document.getElementsByTagName("Vote");
         numberVotes = nList.getLength();
         log.info("Votes Length: "+numberVotes);
         List<Vote> list = new ArrayList<>(numberVotes);
